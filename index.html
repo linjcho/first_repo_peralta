@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CJ Peralta – Front-end Developer</title>
+<meta name="description" content="Portfolio of CJ Peralta, a front-end developer skilled in HTML, CSS, and JavaScript.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+<style>
+@property --bg { syntax: "<color>"; inherits: true; initial-value: #f3f5f9; }
+@property --surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --ink { syntax: "<color>"; inherits: true; initial-value: #101828; }
+@property --muted { syntax: "<color>"; inherits: true; initial-value: #566074; }
+@property --line { syntax: "<color>"; inherits: true; initial-value: #d5dae3; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #3b3bff; }
+@property --accent-ink { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+
+/* Scrolling themes: the page recolors as each section reaches the middle of the screen */
+body { transition: --bg .7s ease, --surface .7s ease, --ink .7s ease, --muted .7s ease, --line .7s ease, --accent .7s ease, --accent-ink .7s ease; }
+body[data-scene="work"]    { --bg: #e6f4ee; --accent: #0f766e; }
+body[data-scene="about"]   { --bg: #efe9fa; --accent: #7e22ce; }
+body[data-scene="skills"]  { --bg: #fbf3d6; --accent: #b45309; }
+body[data-scene="contact"] { --bg: #161a3a; --surface: #222750; --ink: #eef0ff; --muted: #a9b0d8; --line: #363c70; --accent: #a3adff; --accent-ink: #161a3a; }
+:root[data-theme="dark"] body[data-scene="work"]    { --bg: #0a1513; --surface: #112320; --accent: #4fd1c0; }
+:root[data-theme="dark"] body[data-scene="about"]   { --bg: #140f1e; --surface: #1e1630; --accent: #c799ff; }
+:root[data-theme="dark"] body[data-scene="skills"]  { --bg: #16120a; --surface: #221c10; --accent: #f5b84a; }
+:root[data-theme="dark"] body[data-scene="contact"] { --bg: #000000; --surface: #10131a; --ink: #eef0ff; --muted: #98a2b6; --line: #232838; --accent: #8f9bff; --accent-ink: #0e1117; }
+body[data-scene="play"]    { --bg: #fde7ec; --accent: #be123c; --surface: #ffffff; --ink: #101828; --muted: #566074; --line: #d5dae3; --accent-ink: #ffffff; }
+:root[data-theme="dark"] body[data-scene="play"] { --bg: #1a0b10; --surface: #2a1119; --ink: #e8ecf4; --muted: #98a2b6; --line: #3d1d28; --accent: #fb7185; --accent-ink: #0e1117; }
+@media (prefers-reduced-motion: reduce) { body { transition: none; } }
+
+/* Scroll progress */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 20; background: var(--accent); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+
+/* Moving designs for every section */
+section { position: relative; overflow: hidden; }
+.wrap { position: relative; z-index: 1; }
+.deco { position: absolute; z-index: 0; pointer-events: none; will-change: transform; }
+.deco i { display: block; width: 100%; height: 100%; }
+.d-circle i { border-radius: 50%; background: var(--accent); opacity: .14; }
+.d-ring i { border-radius: 30%; border: 3px solid var(--accent); opacity: .45; }
+.d-tri i { background: var(--accent); opacity: .25; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.d-dots i { background-image: radial-gradient(var(--accent) 2px, transparent 2.5px); background-size: 16px 16px; opacity: .5; }
+@media (prefers-reduced-motion: no-preference) {
+  .deco i { animation: float var(--d, 9s) ease-in-out infinite alternate; }
+  .d-spin i { animation: spin 24s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+}
+
+/* Skills marquee */
+.marquee { overflow: hidden; border-block: 1px solid var(--line); padding: 1.1rem 0; }
+.marquee-track { display: flex; width: max-content; }
+.marquee-group { display: flex; flex-shrink: 0; }
+.marquee-group span {
+  font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: -0.02em;
+  padding-inline: 1.5rem; display: inline-flex; align-items: center; gap: 3rem; white-space: nowrap;
+}
+.marquee-group span::after { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track { animation: marquee 30s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+}
+
+/* =========================================================
+   1. THEME – change these values to restyle the whole site
+   ========================================================= */
+:root {
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --ink: #101828;
+  --muted: #566074;
+  --line: #d5dae3;
+  --accent: #3b3bff;
+  --accent-ink: #ffffff;
+
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+
+  --radius: 14px;
+  --wrap: 1080px;
+}
+:root[data-theme="dark"] {
+  --bg: #0e1117;
+  --surface: #171b24;
+  --ink: #e8ecf4;
+  --muted: #98a2b6;
+  --line: #2a3140;
+  --accent: #8f9bff;
+  --accent-ink: #0e1117;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1117; --surface: #171b24; --ink: #e8ecf4; --muted: #98a2b6;
+    --line: #2a3140; --accent: #8f9bff; --accent-ink: #0e1117;
+  }
+}
+
+/* =========================================================
+   2. BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.15rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: min(var(--wrap), 100% - 2.5rem); margin-inline: auto; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
+h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em; }
+section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.section-head { margin-bottom: 2.25rem; max-width: 36rem; }
+.section-head p { color: var(--muted); margin: .75rem 0 0; }
+
+.btn {
+  display: inline-block; font-family: var(--display); font-weight: 600; font-size: 1rem;
+  padding: .85rem 1.4rem; border-radius: 999px; text-decoration: none;
+  border: 2px solid var(--ink); cursor: pointer; background: transparent; color: var(--ink);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.btn:hover { background: var(--ink); color: var(--bg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.1); background: var(--accent); color: var(--accent-ink); }
+
+/* =========================================================
+   3. HEADER
+   ========================================================= */
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { font-family: var(--display); font-weight: 800; text-decoration: none; font-size: 1.15rem; }
+.nav { display: flex; align-items: center; gap: 1.5rem; }
+.nav a { font-family: var(--display); font-weight: 600; font-size: .95rem; text-decoration: none; color: var(--muted); }
+.nav a:hover, .nav a.active { color: var(--ink); }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); cursor: pointer; font-size: 1.05rem;
+}
+.menu-toggle { display: none; }
+@media (max-width: 720px) {
+  .menu-toggle { display: inline-grid; place-items: center; }
+  .nav {
+    position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; align-items: flex-start;
+    gap: 1rem; padding: 1.25rem; background: var(--bg); border-bottom: 1px solid var(--line);
+    display: none;
+  }
+  .nav.open { display: flex; }
+}
+
+/* =========================================================
+   4. HERO – the one memorable moment: a huge name that
+      settles into place on load
+   ========================================================= */
+.hero { position: relative; isolation: isolate; overflow: hidden; padding-top: clamp(3rem, 9vw, 7rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+.shapes { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.shape { position: absolute; transition: transform .5s ease-out; }
+.shape i { display: block; width: 100%; height: 100%; }
+.sh1 { width: 150px; height: 150px; right: 6%; top: 8%; }
+.sh1 i { border-radius: 50%; background: var(--accent); opacity: .16; }
+.sh2 { width: 110px; height: 110px; right: 20%; bottom: 10%; }
+.sh2 i { border-radius: 28%; border: 3px solid var(--accent); opacity: .5; }
+.sh3 { width: 70px; height: 70px; right: 40%; top: 6%; }
+.sh3 i { background: #0f766e; opacity: .35; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.sh4 { width: 90px; height: 90px; right: 4%; bottom: 22%; }
+.sh4 i { background-image: radial-gradient(var(--ink) 2px, transparent 2.5px); background-size: 15px 15px; opacity: .35; }
+@media (prefers-reduced-motion: no-preference) {
+  .shape i { animation: float var(--d, 8s) ease-in-out infinite alternate; }
+  .sh2 i { --d: 10s; } .sh3 i { --d: 6s; animation-direction: alternate-reverse; } .sh4 i { --d: 9s; }
+  @keyframes float { from { transform: translateY(-12px) rotate(-6deg); } to { transform: translateY(12px) rotate(6deg); } }
+}
+.hero h1 {
+  font-size: clamp(3.2rem, 13vw, 9.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: .92;
+}
+.hero h1 span { display: block; }
+.hero h1 .second { color: var(--accent); }
+.hero-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; margin-top: 2.5rem; align-items: end; }
+.hero p { margin: 0; max-width: 34rem; font-size: 1.3rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; }
+.status { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--display); font-size: .95rem; color: var(--muted); margin-bottom: 1.5rem; }
+.status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #1fb26b; }
+@media (max-width: 720px) {
+  .hero-row { grid-template-columns: 1fr; }
+  .hero-actions { justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 span { animation: settle .9s cubic-bezier(.2,.7,.2,1) both; }
+  .hero h1 .second { animation-delay: .12s; }
+  @keyframes settle { from { opacity: 0; transform: translateY(.35em); } to { opacity: 1; transform: none; } }
+}
+
+/* =========================================================
+   5. WORK
+   ========================================================= */
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+.filters button {
+  font-family: var(--display); font-weight: 600; font-size: .95rem;
+  padding: .5rem 1.05rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+}
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.75rem; }
+.project { display: block; text-decoration: none; }
+.project[hidden] { display: none; }
+.thumb {
+  aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden;
+  display: grid; place-items: center; position: relative;
+  font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 8vw, 5rem);
+  letter-spacing: -0.04em; color: rgba(255,255,255,.92);
+  transition: transform .25s;
+}
+.project:hover .thumb { transform: translateY(-4px); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.project:nth-child(1) .thumb { background: #3b3bff; }
+.project:nth-child(2) .thumb { background: #0f766e; }
+.project:nth-child(3) .thumb { background: #c2410c; }
+.project:nth-child(4) .thumb { background: #7e22ce; }
+.project-meta { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; align-items: baseline; }
+.project-meta time { font-family: var(--display); color: var(--muted); font-size: .95rem; }
+.project p { margin: .35rem 0 .6rem; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; margin: 0; list-style: none; }
+.tags li { font-family: var(--display); font-size: .85rem; border: 1px solid var(--line); border-radius: 999px; padding: .15rem .65rem; color: var(--muted); }
+@media (max-width: 720px) { .projects { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   6. ABOUT
+   ========================================================= */
+.about-text { max-width: 40rem; }
+.about-text p { margin: 1rem 0 0; }
+
+/* Skills showcase */
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+.tabs button {
+  font-family: var(--display); font-weight: 600; font-size: 1rem; cursor: pointer;
+  padding: .6rem 1.2rem; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--muted);
+}
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.panel {
+  display: grid; grid-template-columns: 1fr 1.25fr; gap: 2rem; align-items: start;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.25rem, 3vw, 2rem);
+}
+.panel[hidden] { display: none; }
+.panel h3 { font-size: 1.6rem; }
+.panel p { color: var(--muted); margin: .5rem 0 1rem; }
+.panel ul { margin: 0; padding: 0; list-style: none; }
+.panel li { padding: .45rem 0; border-top: 1px solid var(--line); font-size: 1.05rem; }
+.demo { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem; min-height: 330px; font-family: var(--display); }
+.hint { margin: 0 0 .75rem !important; font-size: .95rem; color: var(--muted); }
+
+/* HTML demo */
+.anatomy {
+  display: grid; gap: .5rem; height: 230px;
+  grid-template-columns: 1fr 2fr 1fr; grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas: "h h h" "n m a" "f f f";
+}
+.anatomy button {
+  font: inherit; font-weight: 600; color: var(--ink); cursor: pointer;
+  background: transparent; border: 2px dashed var(--line); border-radius: 8px;
+  transition: background .2s, border-color .2s;
+}
+.anatomy button:hover, .anatomy button[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.a-h { grid-area: h; } .a-n { grid-area: n; } .a-m { grid-area: m; } .a-a { grid-area: a; } .a-f { grid-area: f; }
+.caption { margin: 1rem 0 0; min-height: 3.2em; font-size: 1rem; color: var(--muted); }
+.caption code { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--accent); font-weight: 600; margin-right: .4rem; }
+
+/* CSS demo */
+.css-stage { height: 150px; display: grid; place-items: center; }
+.css-box { width: 110px; height: 110px; background: hsl(240 80% 55%); transition: all .15s; }
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1rem; margin-top: .75rem; }
+.controls label { font-size: .9rem; gap: .2rem; }
+.controls input[type="range"] { padding: 0; accent-color: var(--accent); }
+pre.code { margin: .9rem 0 0; padding: .8rem; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font: .85rem/1.5 ui-monospace, Menlo, Consolas, monospace; overflow-x: auto; color: var(--ink); }
+
+/* JS demo */
+.game-bar { display: flex; justify-content: space-between; margin-bottom: .6rem; font-size: .95rem; color: var(--muted); }
+.game-bar b { color: var(--ink); }
+.field { position: relative; height: 200px; border-radius: 10px; border: 1px dashed var(--line); overflow: hidden; margin-bottom: .9rem; }
+.g-msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1rem; margin: 0 !important; }
+.g-msg[hidden] { display: none; }
+.dot {
+  position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.dot[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) { .dot { transition: left .25s, top .25s; } }
+@media (max-width: 800px) { .panel { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   8. CONTACT
+   ========================================================= */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); }
+form { display: grid; gap: 1rem; }
+label { font-family: var(--display); font-weight: 600; font-size: .95rem; display: grid; gap: .4rem; }
+input, textarea {
+  font: inherit; font-family: var(--body); font-size: 1.05rem; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .75rem .9rem; width: 100%;
+}
+textarea { min-height: 140px; resize: vertical; }
+.form-note { min-height: 1.5em; margin: 0; font-family: var(--display); font-size: .95rem; }
+.form-note.error { color: #d92d20; }
+.contact-links { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .5rem; }
+.contact-links a { font-family: var(--display); font-weight: 600; }
+@media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   9. FOOTER
+   ========================================================= */
+footer { border-top: 1px solid var(--line); padding-block: 2rem; color: var(--muted); font-family: var(--display); font-size: .95rem; }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+
+/* =========================================================
+   MINESWEEPER
+   ========================================================= */
+.ms { display: grid; gap: 1rem; justify-items: start; }
+.ms-bar, .ms-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; font-family: var(--display); }
+.ms-bar span { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .4rem .9rem; font-size: 1.1rem; }
+.ms-bar b { display: inline-block; min-width: 3ch; font-variant-numeric: tabular-nums; }
+.ms select {
+  font: inherit; font-family: var(--display); font-size: 1rem; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .65rem .8rem;
+}
+.ms-scroll { max-width: 100%; overflow-x: auto; padding: 6px; }
+.ms-board {
+  --size: clamp(24px, calc((100vw - 5rem) / var(--cols)), 40px);
+  display: grid; grid-template-columns: repeat(var(--cols), var(--size)); gap: 3px;
+  user-select: none; -webkit-user-select: none; touch-action: manipulation;
+}
+.cell {
+  width: var(--size); height: var(--size); padding: 0; display: grid; place-items: center; line-height: 1; cursor: pointer;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--surface); box-shadow: inset 0 -3px 0 var(--line);
+  color: var(--ink); font-family: var(--display); font-weight: 800; font-size: calc(var(--size) * .52);
+}
+.cell:hover:not(.open) { background: color-mix(in srgb, var(--accent) 18%, var(--surface)); }
+.cell.open { box-shadow: none; cursor: default; background: color-mix(in srgb, var(--ink) 7%, var(--bg)); }
+.cell.flag { color: var(--accent); }
+.cell.shown { color: var(--ink); }
+.cell.wrong { color: #dc2626; }
+.cell.boom { background: #dc2626; color: #fff; }
+.n1 { color: #4f7cff; } .n2 { color: #22a559; } .n3 { color: #ef4444; } .n4 { color: #a06bff; }
+.n5 { color: #d97706; } .n6 { color: #0ea5b7; } .n7 { color: var(--ink); } .n8 { color: var(--muted); }
+.ms-status { min-height: 1.7em; margin: 0; font-family: var(--display); font-weight: 600; }
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#top">CJ Peralta</a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+      <a href="#play">Play</a>
+    </nav>
+    <div style="display:flex; gap:.5rem">
+      <button class="icon-btn" id="theme-toggle" aria-label="Switch to dark theme" title="Toggle theme">◐</button>
+      <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" data-scene="hero">
+    <div class="shapes" aria-hidden="true">
+      <div class="shape sh1" data-depth="40"><i></i></div>
+      <div class="shape sh2" data-depth="-30"><i></i></div>
+      <div class="shape sh3" data-depth="55"><i></i></div>
+      <div class="shape sh4" data-depth="-45"><i></i></div>
+    </div>
+    <div class="wrap">
+      <p class="status">Available for freelance projects from January</p>
+      <h1><span>CJ Peralta</span><span class="second">builds for the web.</span></h1>
+      <div class="hero-row">
+        <p>I’m a front-end developer who turns ideas into clear, fast, accessible websites with HTML, CSS, and JavaScript.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#work">See my work</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-label="Skills: HTML, CSS, JavaScript, responsive design, accessibility, animation, clean code">
+    <div class="marquee-track" aria-hidden="true">
+      <div class="marquee-group"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Responsive design</span><span>Accessibility</span><span>Animation</span><span>Clean code</span></div>
+      <div class="marquee-group"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Responsive design</span><span>Accessibility</span><span>Animation</span><span>Clean code</span></div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section id="work" data-scene="work">
+    <div class="deco d-ring" data-speed="-0.12" style="top:40px; right:4%; width:120px; height:120px"><i></i></div>
+    <div class="deco d-dots" data-speed="0.10" style="bottom:60px; left:2%; width:100px; height:100px"><i></i></div>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Selected work</h2>
+        <p>A few projects built with HTML, CSS, and JavaScript. Swap in your own titles, descriptions, and images.</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="web" aria-pressed="false">Web</button>
+        <button type="button" data-filter="brand" aria-pressed="false">Branding</button>
+        <button type="button" data-filter="app" aria-pressed="false">Apps</button>
+      </div>
+
+      <div class="projects" id="projects">
+        <!-- To use a real image, add <img src="images/your-image.jpg" alt="Describe it"> inside .thumb -->
+        <a class="project" href="#" data-category="web">
+          <div class="thumb" aria-hidden="true">Ab</div>
+          <div class="project-meta"><h3>Project one</h3><time datetime="2026">2026</time></div>
+          <p>One sentence on the problem you solved and the result.</p>
+          <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+        </a>
+
+        <a class="project" href="#" data-category="brand">
+          <div class="thumb" aria-hidden="true">Cd</div>
+          <div class="project-meta"><h3>Project two</h3><time datetime="2025">2025</time></div>
+          <p>One sentence on the problem you solved and the result.</p>
+          <ul class="tags"><li>CSS</li><li>Animation</li></ul>
+        </a>
+
+        <a class="project" href="#" data-category="app">
+          <div class="thumb" aria-hidden="true">Ef</div>
+          <div class="project-meta"><h3>Project three</h3><time datetime="2025">2025</time></div>
+          <p>One sentence on the problem you solved and the result.</p>
+          <ul class="tags"><li>JavaScript</li><li>DOM</li></ul>
+        </a>
+
+        <a class="project" href="#" data-category="web">
+          <div class="thumb" aria-hidden="true">Gh</div>
+          <div class="project-meta"><h3>Project four</h3><time datetime="2024">2024</time></div>
+          <p>One sentence on the problem you solved and the result.</p>
+          <ul class="tags"><li>HTML</li><li>Accessibility</li></ul>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" data-scene="about">
+    <div class="deco d-circle" data-speed="0.15" style="top:10%; right:8%; width:180px; height:180px"><i></i></div>
+    <div class="deco d-tri d-spin" data-speed="-0.10" style="bottom:15%; right:30%; width:80px; height:80px"><i></i></div>
+    <div class="wrap about-text">
+      <h2>About CJ</h2>
+      <p>I’m CJ Peralta, a front-end developer based in the Philippines. I write semantic HTML, maintainable CSS, and plain JavaScript that works on any device.</p>
+      <p>Add something personal here: what you do away from the screen, or what you’re learning right now.</p>
+    </div>
+  </section>
+
+  <!-- SKILLS SHOWCASE -->
+  <section id="skills" data-scene="skills">
+    <div class="deco d-tri" data-speed="0.12" style="top:40px; left:3%; width:90px; height:90px"><i></i></div>
+    <div class="deco d-circle" data-speed="-0.14" style="bottom:30px; right:5%; width:140px; height:140px"><i></i></div>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Skills, live</h2>
+        <p>Try each demo below. They’re built with the same three languages.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Skills">
+        <button role="tab" id="tab-html" aria-selected="true" aria-controls="panel-html">HTML</button>
+        <button role="tab" id="tab-css" aria-selected="false" aria-controls="panel-css" tabindex="-1">CSS</button>
+        <button role="tab" id="tab-js" aria-selected="false" aria-controls="panel-js" tabindex="-1">JavaScript</button>
+      </div>
+
+      <!-- HTML -->
+      <div class="panel" id="panel-html" role="tabpanel" aria-labelledby="tab-html">
+        <div>
+          <h3>HTML</h3>
+          <p>Semantic, accessible markup that works for everyone.</p>
+          <ul><li>Semantic structure</li><li>Forms & validation</li><li>SEO & metadata</li><li>ARIA & accessibility</li></ul>
+        </div>
+        <div class="demo">
+          <p class="hint">Select a block to see the tag behind it.</p>
+          <div class="anatomy" id="anatomy">
+            <button type="button" class="a-h" aria-pressed="false" data-tag="<header>" data-note="Holds the site title and top-level navigation.">header</button>
+            <button type="button" class="a-n" aria-pressed="false" data-tag="<nav>" data-note="Marks a group of links so screen readers can jump to it.">nav</button>
+            <button type="button" class="a-m" aria-pressed="false" data-tag="<main>" data-note="The page’s primary content. Use it once per page.">main</button>
+            <button type="button" class="a-a" aria-pressed="false" data-tag="<aside>" data-note="Related content that sits beside the main flow.">aside</button>
+            <button type="button" class="a-f" aria-pressed="false" data-tag="<footer>" data-note="Closing details: copyright, contact, secondary links.">footer</button>
+          </div>
+          <p class="caption" id="caption"></p>
+        </div>
+      </div>
+
+      <!-- CSS -->
+      <div class="panel" id="panel-css" role="tabpanel" aria-labelledby="tab-css" hidden>
+        <div>
+          <h3>CSS</h3>
+          <p>Responsive layouts and polished interfaces.</p>
+          <ul><li>Flexbox & Grid</li><li>Custom properties & theming</li><li>Responsive design</li><li>Transitions & animation</li></ul>
+        </div>
+        <div class="demo">
+          <div class="css-stage"><div class="css-box" id="css-box"></div></div>
+          <div class="controls">
+            <label>Radius <input type="range" id="c-radius" min="0" max="50" value="12"></label>
+            <label>Rotate <input type="range" id="c-rotate" min="-45" max="45" value="12"></label>
+            <label>Color <input type="range" id="c-hue" min="0" max="360" value="240"></label>
+            <label>Shadow <input type="range" id="c-shadow" min="0" max="50" value="24"></label>
+          </div>
+          <pre class="code"><code id="css-out"></code></pre>
+        </div>
+      </div>
+
+      <!-- JavaScript -->
+      <div class="panel" id="panel-js" role="tabpanel" aria-labelledby="tab-js" hidden>
+        <div>
+          <h3>JavaScript</h3>
+          <p>Clean, dependency-free code that adds real behavior.</p>
+          <ul><li>DOM manipulation</li><li>ES6+ modules & async</li><li>Fetch & APIs</li><li>Events & timers</li></ul>
+        </div>
+        <div class="demo">
+          <div class="game-bar"><span>Score <b id="g-score">0</b></span><span>Time <b id="g-time">15</b>s</span><span>Best <b id="g-best">0</b></span></div>
+          <div class="field" id="field">
+            <button type="button" class="dot" id="dot" aria-label="Catch the dot" hidden></button>
+            <p class="g-msg hint" id="g-msg">Press Start, then click the dot as many times as you can in 15 seconds.</p>
+          </div>
+          <button type="button" class="btn primary" id="g-start">Start</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-scene="contact">
+    <div class="deco d-ring d-spin" data-speed="0.10" style="top:20%; right:10%; width:160px; height:160px"><i></i></div>
+    <div class="deco d-dots" data-speed="-0.10" style="bottom:40px; left:6%; width:120px; height:120px"><i></i></div>
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Let’s work together</h2>
+        <p style="color:var(--muted); margin-top:.75rem; max-width:26rem">Tell me about your project, timeline, and budget. I reply within two working days.</p>
+        <ul class="contact-links">
+          <li><a href="mailto:clinjericho18@gmail.com">clinjericho18@gmail.com</a></li>
+          <li><a href="tel:+639912367119">+63 991 236 7119</a></li>
+          <li><a href="https://www.facebook.com/nlin.jericho" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+          <li><a href="https://www.instagram.com/lin.jcho" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+
+      <!-- This form opens the visitor's email app. To receive messages directly,
+           swap in a form service (Formspree, Netlify Forms, etc.) as the action URL. -->
+      <form id="contact-form" novalidate>
+        <label>Name <input type="text" name="name" autocomplete="name" required></label>
+        <label>Email <input type="email" name="email" autocomplete="email" required></label>
+        <label>Message <textarea name="message" required></textarea></label>
+        <button class="btn primary" type="submit">Send message</button>
+        <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+<!-- PLAY -->
+  <section id="play" data-scene="play">
+    <div class="deco d-circle" data-speed="0.12" style="top:8%; left:4%; width:150px; height:150px"><i></i></div>
+    <div class="deco d-tri d-spin" data-speed="-0.12" style="bottom:10%; right:6%; width:90px; height:90px"><i></i></div>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Take a break</h2>
+        <p>Classic Minesweeper. Click a square to reveal it, and flag the squares you think hide a mine. Your first click is always safe.</p>
+      </div>
+      <div class="ms">
+        <div class="ms-bar">
+          <span>Mines <b id="ms-mines">10</b></span>
+          <span>Time <b id="ms-time">0</b></span>
+        </div>
+        <div class="ms-tools">
+          <label>Level
+            <select id="ms-level">
+              <option value="easy">Easy (9×9, 10 mines)</option>
+              <option value="medium">Medium (12×12, 24 mines)</option>
+              <option value="hard">Hard (16×16, 40 mines)</option>
+            </select>
+          </label>
+          <button type="button" class="btn" id="ms-flag" aria-pressed="false">Flag mode: off</button>
+          <button type="button" class="btn primary" id="ms-new">New game</button>
+        </div>
+        <div class="ms-scroll"><div class="ms-board" id="ms-board" role="group" aria-label="Minesweeper board"></div></div>
+        <p class="ms-status" id="ms-status" role="status" aria-live="polite"></p>
+        <p class="hint" style="margin:0">Right-click, or turn on flag mode, to place a flag. With a square selected, press F to flag it and the arrow keys to move. Click a number with enough flags around it to reveal the rest of its neighbors.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> CJ Peralta</span>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   SETTINGS – edit this
+   ========================================================= */
+const CONTACT_EMAIL = "clinjericho18@gmail.com";
+
+/* =========================================================
+   Theme toggle (remembers the choice)
+   ========================================================= */
+const root = document.documentElement;
+const themeBtn = document.getElementById("theme-toggle");
+
+function currentTheme() {
+  return root.dataset.theme ||
+    (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+}
+function applyTheme(theme) {
+  root.dataset.theme = theme;
+  themeBtn.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} theme`);
+}
+try {
+  const saved = localStorage.getItem("theme");
+  if (saved) root.dataset.theme = saved;
+} catch (e) { /* storage unavailable – fine */ }
+applyTheme(currentTheme());
+
+themeBtn.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem("theme", next); } catch (e) {}
+});
+
+/* =========================================================
+   Mobile menu
+   ========================================================= */
+const nav = document.getElementById("nav");
+const menuBtn = document.getElementById("menu-toggle");
+menuBtn.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", open);
+  menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+});
+nav.addEventListener("click", (e) => {
+  if (e.target.matches("a")) {
+    nav.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+  }
+});
+
+/* =========================================================
+   Project filters
+   ========================================================= */
+const filterBtns = document.querySelectorAll(".filters button");
+const projects = document.querySelectorAll(".project");
+filterBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const f = btn.dataset.filter;
+    filterBtns.forEach((b) => b.setAttribute("aria-pressed", b === btn));
+    projects.forEach((p) => { p.hidden = !(f === "all" || p.dataset.category === f); });
+  });
+});
+
+/* =========================================================
+   Highlight the current section in the nav
+   ========================================================= */
+const links = [...nav.querySelectorAll("a")];
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id));
+    }
+  });
+}, { rootMargin: "-45% 0px -50% 0px" });
+document.querySelectorAll("main section[id]").forEach((s) => observer.observe(s));
+
+/* =========================================================
+   Contact form (validates, then opens the visitor's email app)
+   ========================================================= */
+const form = document.getElementById("contact-form");
+const note = document.getElementById("form-note");
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const data = new FormData(form);
+  const name = data.get("name").trim();
+  const email = data.get("email").trim();
+  const message = data.get("message").trim();
+
+  note.className = "form-note";
+  if (!name || !message) {
+    note.textContent = "Please add your name and a message.";
+    note.classList.add("error");
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    note.textContent = "That email address doesn’t look right. Check it and try again.";
+    note.classList.add("error");
+    return;
+  }
+  const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
+  const body = encodeURIComponent(`${message}\n\n${name}\n${email}`);
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  note.textContent = "Opening your email app…";
+  form.reset();
+});
+
+/* =========================================================
+   Hero: shapes drift slightly with the pointer
+   ========================================================= */
+const calm = matchMedia("(prefers-reduced-motion: reduce)");
+const hero = document.querySelector(".hero");
+const shapes = [...hero.querySelectorAll(".shape")];
+hero.addEventListener("pointermove", (e) => {
+  if (calm.matches) return;
+  const r = hero.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  shapes.forEach((s) => { const d = +s.dataset.depth; s.style.transform = `translate(${x * d}px, ${y * d}px)`; });
+});
+hero.addEventListener("pointerleave", () => shapes.forEach((s) => (s.style.transform = "")));
+
+/* Project thumbnails tilt toward the pointer */
+document.querySelectorAll(".thumb").forEach((t) => {
+  t.addEventListener("pointermove", (e) => {
+    if (calm.matches) return;
+    const r = t.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    t.style.transform = `perspective(700px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-4px)`;
+  });
+  t.addEventListener("pointerleave", () => (t.style.transform = ""));
+});
+
+/* =========================================================
+   Skills showcase: tabs
+   ========================================================= */
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(tab) {
+  tabs.forEach((t) => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => selectTab(t));
+  t.addEventListener("keydown", (e) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (!step) return;
+    const next = tabs[(i + step + tabs.length) % tabs.length];
+    next.focus(); selectTab(next);
+  });
+});
+
+/* HTML demo: show the tag behind each block */
+const caption = document.getElementById("caption");
+const blocks = document.querySelectorAll("#anatomy button");
+function showTag(btn) {
+  blocks.forEach((b) => b.setAttribute("aria-pressed", b === btn));
+  caption.innerHTML = "";
+  const code = document.createElement("code");
+  code.textContent = btn.dataset.tag;
+  caption.append(code, btn.dataset.note);
+}
+blocks.forEach((b) => b.addEventListener("click", () => showTag(b)));
+showTag(document.querySelector(".a-m"));
+
+/* CSS demo: sliders write live styles and show the CSS */
+const box = document.getElementById("css-box");
+const out = document.getElementById("css-out");
+const ctl = { r: c("c-radius"), rot: c("c-rotate"), h: c("c-hue"), sh: c("c-shadow") };
+function c(id) { return document.getElementById(id); }
+function updateBox() {
+  const radius = ctl.r.value, rot = ctl.rot.value, hue = ctl.h.value, sh = ctl.sh.value;
+  const color = `hsl(${hue} 80% 55%)`;
+  const shadow = `0 ${Math.round(sh / 2)}px ${sh}px rgb(0 0 0 / .25)`;
+  box.style.borderRadius = radius + "%";
+  box.style.transform = `rotate(${rot}deg)`;
+  box.style.background = color;
+  box.style.boxShadow = shadow;
+  out.textContent = `.box {\n  border-radius: ${radius}%;\n  transform: rotate(${rot}deg);\n  background: ${color};\n  box-shadow: ${shadow};\n}`;
+}
+Object.values(ctl).forEach((el) => el.addEventListener("input", updateBox));
+updateBox();
+
+/* JS demo: catch the dot */
+const field = document.getElementById("field");
+const dot = document.getElementById("dot");
+const msg = document.getElementById("g-msg");
+const startBtn = document.getElementById("g-start");
+const scoreEl = document.getElementById("g-score");
+const timeEl = document.getElementById("g-time");
+const bestEl = document.getElementById("g-best");
+let score = 0, time = 15, best = 0, running = false, tick = null, hop = null;
+
+function moveDot() {
+  dot.style.left = Math.random() * (field.clientWidth - 44) + "px";
+  dot.style.top = Math.random() * (field.clientHeight - 44) + "px";
+}
+function endGame() {
+  clearInterval(tick); clearInterval(hop);
+  running = false; dot.hidden = true;
+  best = Math.max(best, score); bestEl.textContent = best;
+  msg.textContent = `Time’s up. You caught ${score}.`;
+  msg.hidden = false;
+  startBtn.textContent = "Play again"; startBtn.disabled = false;
+}
+function startGame() {
+  score = 0; time = 15; running = true;
+  scoreEl.textContent = 0; timeEl.textContent = time;
+  msg.hidden = true; dot.hidden = false; startBtn.disabled = true;
+  moveDot();
+  tick = setInterval(() => { timeEl.textContent = --time; if (time <= 0) endGame(); }, 1000);
+  hop = setInterval(moveDot, 1100);
+}
+dot.addEventListener("click", () => { if (running) { scoreEl.textContent = ++score; moveDot(); } });
+startBtn.addEventListener("click", startGame);
+
+/* =========================================================
+   Scrolling themes, progress bar, and scroll-driven shapes
+   ========================================================= */
+const sceneObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e) => { if (e.isIntersecting) document.body.dataset.scene = e.target.dataset.scene; });
+}, { rootMargin: "-45% 0px -50% 0px" });
+document.querySelectorAll("[data-scene]").forEach((el) => sceneObserver.observe(el));
+
+const progress = document.getElementById("progress");
+const decos = [...document.querySelectorAll(".deco")];
+let ticking = false;
+function onScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+  if (!calm.matches) {
+    decos.forEach((d) => {
+      const r = d.parentElement.getBoundingClientRect();
+      const offset = (r.top + r.height / 2 - innerHeight / 2) * parseFloat(d.dataset.speed);
+      d.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+    });
+  }
+  ticking = false;
+}
+addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+addEventListener("resize", onScroll);
+onScroll();
+
+/* =========================================================
+   Minesweeper
+   ========================================================= */
+const LEVELS = {
+  easy:   { rows: 9,  cols: 9,  mines: 10 },
+  medium: { rows: 12, cols: 12, mines: 24 },
+  hard:   { rows: 16, cols: 16, mines: 40 },
+};
+const msBoard = document.getElementById("ms-board");
+const msMines = document.getElementById("ms-mines");
+const msTime = document.getElementById("ms-time");
+const msStatus = document.getElementById("ms-status");
+const msLevel = document.getElementById("ms-level");
+const msFlagBtn = document.getElementById("ms-flag");
+const bestTimes = {};
+let game = null;
+let flagMode = false;
+
+function neighbors(i) {
+  const { rows, cols } = game, r = Math.floor(i / cols), c = i % cols, out = [];
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      const rr = r + dr, cc = c + dc;
+      if ((dr || dc) && rr >= 0 && rr < rows && cc >= 0 && cc < cols) out.push(rr * cols + cc);
+    }
+  }
+  return out;
+}
+
+function newGame() {
+  if (game) clearInterval(game.timer);
+  const L = LEVELS[msLevel.value];
+  game = { ...L, level: msLevel.value, cells: [], started: false, over: false, flags: 0, opened: 0, seconds: 0, timer: null };
+  msBoard.style.setProperty("--cols", L.cols);
+  msBoard.innerHTML = "";
+  for (let i = 0; i < L.rows * L.cols; i++) {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "cell";
+    el.dataset.i = i;
+    el.tabIndex = i === 0 ? 0 : -1;
+    msBoard.append(el);
+    game.cells.push({ mine: false, adj: 0, open: false, flag: false, show: false, wrong: false, boom: false, el });
+    draw(i);
+  }
+  msMines.textContent = L.mines;
+  msTime.textContent = 0;
+  msStatus.textContent = "Reveal any square to start.";
+}
+
+function draw(i) {
+  const c = game.cells[i], { cols } = game;
+  let cls = "cell", txt = "", state;
+  if (c.open && !c.mine) { cls += " open"; if (c.adj) { cls += " n" + c.adj; txt = c.adj; } state = c.adj ? `${c.adj} nearby mines` : "empty"; }
+  else if (c.boom) { cls += " open boom"; txt = "●"; state = "mine, you lost here"; }
+  else if (c.show) { cls += " open shown"; txt = "●"; state = "mine"; }
+  else if (c.wrong) { cls += " flag wrong"; txt = "✕"; state = "wrong flag"; }
+  else if (c.flag) { cls += " flag"; txt = "⚑"; state = "flagged"; }
+  else state = "hidden";
+  c.el.className = cls;
+  c.el.textContent = txt;
+  c.el.setAttribute("aria-label", `Row ${Math.floor(i / cols) + 1}, column ${(i % cols) + 1}, ${state}`);
+}
+
+function placeMines(safe) {
+  const banned = new Set([safe, ...neighbors(safe)]);
+  const pool = [...game.cells.keys()].filter((i) => !banned.has(i));
+  for (let k = pool.length - 1; k > 0; k--) {
+    const j = Math.floor(Math.random() * (k + 1));
+    [pool[k], pool[j]] = [pool[j], pool[k]];
+  }
+  pool.slice(0, game.mines).forEach((i) => (game.cells[i].mine = true));
+  game.cells.forEach((c, i) => { c.adj = neighbors(i).filter((n) => game.cells[n].mine).length; });
+}
+
+function reveal(i) {
+  const c = game.cells[i];
+  if (game.over || c.flag) return;
+  if (c.open) { chord(i); return; }
+  if (!game.started) {
+    game.started = true;
+    placeMines(i);
+    msStatus.textContent = "";
+    game.timer = setInterval(() => { game.seconds = Math.min(999, game.seconds + 1); msTime.textContent = game.seconds; }, 1000);
+  }
+  if (c.mine) { lose(i); return; }
+  const stack = [i];
+  while (stack.length) {
+    const j = stack.pop(), cj = game.cells[j];
+    if (cj.open || cj.flag) continue;
+    cj.open = true; game.opened++; draw(j);
+    if (cj.adj === 0) neighbors(j).forEach((n) => { if (!game.cells[n].open) stack.push(n); });
+  }
+  if (game.opened === game.rows * game.cols - game.mines) win();
+}
+
+function chord(i) {
+  const c = game.cells[i];
+  if (!c.adj) return;
+  const ns = neighbors(i);
+  if (ns.filter((n) => game.cells[n].flag).length !== c.adj) return;
+  ns.forEach((n) => { if (!game.cells[n].flag && !game.cells[n].open) reveal(n); });
+}
+
+function toggleFlag(i) {
+  const c = game.cells[i];
+  if (game.over || c.open) return;
+  c.flag = !c.flag;
+  game.flags += c.flag ? 1 : -1;
+  msMines.textContent = game.mines - game.flags;
+  draw(i);
+}
+
+function lose(i) {
+  game.over = true; clearInterval(game.timer);
+  game.cells[i].boom = true;
+  game.cells.forEach((c, j) => {
+    if (c.mine && !c.flag && j !== i) c.show = true;
+    if (!c.mine && c.flag) c.wrong = true;
+    draw(j);
+  });
+  msStatus.textContent = "Boom. That square had a mine. Press New game to try again.";
+}
+
+function win() {
+  game.over = true; clearInterval(game.timer);
+  game.cells.forEach((c, j) => { if (c.mine) { c.flag = true; draw(j); } });
+  msMines.textContent = 0;
+  let text = `You cleared the board in ${game.seconds} seconds.`;
+  if (!bestTimes[game.level] || game.seconds < bestTimes[game.level]) {
+    bestTimes[game.level] = game.seconds;
+    text += " That’s your best time on this level.";
+  }
+  msStatus.textContent = text;
+}
+
+msBoard.addEventListener("click", (e) => {
+  const b = e.target.closest(".cell");
+  if (!b) return;
+  const i = +b.dataset.i;
+  flagMode ? toggleFlag(i) : reveal(i);
+});
+msBoard.addEventListener("contextmenu", (e) => {
+  const b = e.target.closest(".cell");
+  if (!b) return;
+  e.preventDefault();
+  toggleFlag(+b.dataset.i);
+});
+msBoard.addEventListener("keydown", (e) => {
+  const b = e.target.closest(".cell");
+  if (!b) return;
+  const i = +b.dataset.i, { cols } = game;
+  const moves = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -cols, ArrowDown: cols };
+  if (e.key in moves) {
+    e.preventDefault();
+    if (e.key === "ArrowLeft" && i % cols === 0) return;
+    if (e.key === "ArrowRight" && i % cols === cols - 1) return;
+    const target = game.cells[i + moves[e.key]];
+    if (target) target.el.focus();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFlag(i);
+  }
+});
+msBoard.addEventListener("focusin", (e) => {
+  const b = e.target.closest(".cell");
+  if (!b) return;
+  msBoard.querySelectorAll('.cell[tabindex="0"]').forEach((x) => (x.tabIndex = -1));
+  b.tabIndex = 0;
+});
+msFlagBtn.addEventListener("click", () => {
+  flagMode = !flagMode;
+  msFlagBtn.setAttribute("aria-pressed", flagMode);
+  msFlagBtn.textContent = `Flag mode: ${flagMode ? "on" : "off"}`;
+});
+msLevel.addEventListener("change", newGame);
+document.getElementById("ms-new").addEventListener("click", newGame);
+newGame();
+
+/* Footer year */
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
